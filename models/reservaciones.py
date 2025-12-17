@@ -41,7 +41,14 @@ class Reservacion:
             if lista:
                 for r in lista:
                     id_paquete = r[1]
-                    sql_busqueda_paquete = "SELECT id_destino FROM destinos_paquetes WHERE id_paquete = :id_p"  
+                    sql_bus_nom_paq = "SELECT * FROM paquetes WHERE id_paquete = :id_p"
+                    c.cursor.execute(sql_bus_nom_paq,id_p = id_paquete)
+                    fila = c.cursor.fetchone()
+                    if fila:
+                        nombre_paquete = fila[1]
+
+
+                    sql_busqueda_paquete = "SELECT id_destino FROM destinos_paquetes WHERE id_paquete = :id_p"
                     c.cursor.execute(sql_busqueda_paquete, id_p = id_paquete)
                     lista_d = c.cursor.fetchall()
                     lista_nombres_destinos = []
@@ -53,8 +60,10 @@ class Reservacion:
                             fila_d = c.cursor.fetchone()
                             if fila_d:
                                 lista_nombres_destinos.append(fila_d[0])
+                    print("-------------------------------------------------------")
                     print(f"id reservacion: {r[0]}")
-
+                    print(f"nombre paquete: {nombre_paquete}")
+                print("-------------------------------------------------------")
             if not lista:
                 print("No se encotraro registros")
                 return None

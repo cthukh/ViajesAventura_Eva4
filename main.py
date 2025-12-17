@@ -79,19 +79,19 @@ def menuHome(usuario:object):
     print("1. Explorar paquetes")
     print("2. ver destinos")
     print("3. Reservar paquete")
-    print("5. ver reservas")
+    print("4. ver reservas")
 
     if tipo_usuario!= 1:
-        print("4. panel de administración")
+        print("5. panel de administración")
     print("0. Cerrar sesión")
     print("")
 
     opcionHome = int(input("Ingrese opcion: "))
-    while opcionHome < 0 or opcionHome > 4:
+    while opcionHome < 0 or opcionHome > 5:
         print("Opcion invalida")
         opcionHome = int(input("Ingrese opcion: "))
 
-    while opcionHome == 4 and tipo_usuario == 1:
+    while opcionHome == 5 and tipo_usuario == 1:
         print("opcion invalida")
         opcionHome = int(input("Ingrese opcion: "))
 
@@ -117,6 +117,14 @@ def menuHome(usuario:object):
         back = input("Presione ENTER para continuar ")
         menuHome(usuario)
 
+    elif opcionHome == 4: # ver reservaciones
+        id_usuario = usuario.id_usuario
+        reservacion.verReservaciones(id_usuario)
+        back = input("Presione ENTER para continuar ")
+
+        menuHome(usuario)
+
+
 
 
     elif opcionHome == 2: # Ver destinos
@@ -125,7 +133,7 @@ def menuHome(usuario:object):
         back = input("Presione ENTER para continuar ")
         menuHome(usuario)
 
-    elif opcionHome == 3 and tipo_usuario != 1:
+    elif opcionHome == 5 and tipo_usuario != 1:
             menuAdminDestinos()
             back = input("Presione ENTER para continuar ")
             menuHome(usuario)
@@ -176,6 +184,7 @@ def menuCrearCuenta():
     correo_electronico = input("Ingrese su correo electronico: ")
     telefono           = input("Ingrese su número de teléfono: ")
     password           = input("Ingrese una contraseña para la cuenta: ")
+
     while len(password) < 4:
         print("Contraseña demasiado corta")
         password = input("Ingrese una contraseña para la cuenta: ")
@@ -195,9 +204,14 @@ def menuCrearCuenta():
     usuario.password           = password_hash
 
     usuario_creado = usuario.insetar()
-    
-    back = input("Presione ENTER para continuar ")
-    menuHome(usuario_creado)
+    if usuario_creado:
+        password_bytes = password.encode()
+        autenticado = usuario.login(usuario.correo_electronico, password_bytes)
+        
+        if autenticado:
+            back = input("Presione ENTER para continuar ")
+            menuHome(usuario)
+
 
 
 
@@ -206,17 +220,22 @@ def menuCrearCuenta():
 while True:
     os.system("cls")
     index()
-    opcion_inicio = int(input("Ingrese una opción: "))
-
-    while opcion_inicio > 2 or opcion_inicio < 0:
-        print("opcion invalida")
+    try:
         opcion_inicio = int(input("Ingrese una opción: "))
+        
 
-    if opcion_inicio == 1:      # iniciar sesion
-        menuIniciarSesion()
+        while opcion_inicio > 2 or opcion_inicio < 0:
+            print("opcion invalida")
+            opcion_inicio = int(input("Ingrese una opción: "))
 
-    elif opcion_inicio == 2:    # crear cuenta
-        menuCrearCuenta()
+        if opcion_inicio == 1:      # iniciar sesion
+            menuIniciarSesion()
 
-    elif opcion_inicio == 0:
-        exit()
+        elif opcion_inicio == 2:    # crear cuenta
+            menuCrearCuenta()
+
+        elif opcion_inicio == 0:
+            exit()
+    except ValueError as ve:
+        print(f"Valor invalido")
+        back = input("Presione ENTER para continuar ")

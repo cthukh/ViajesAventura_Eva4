@@ -94,6 +94,7 @@ class Usuario:
             c.conexion.close()
 
 
+
     def login(self, correo_e:str, password_en_bytes:bytes):
         try:
             c = ConexionDB()
