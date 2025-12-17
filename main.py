@@ -4,6 +4,11 @@ from models.usuarios import Usuario
 from models.paquetes import Paquete
 from models.reservaciones import Reservacion
 
+reservacion = Reservacion() 
+paquete = Paquete()
+destino = Destino()
+usuario = Usuario()
+
 def index():
     print("¡Bienvenido a Viajes Aventura!")
     print("Inicia sesión para ver las opciones de viaje ")
@@ -104,9 +109,11 @@ def menuHome(usuario:object):
         paquete.listarPaquetes()
 
         id_paquete_a_reservar = int(input("Ingrese la id del paquete que quiera reservar: "))
-        id_usuario = usuario.id_usuario
+        id_usu = usuario.id_usuario
+        print(id_usu)
 
-        reservacion.reservarPaquete(id_paquete_a_reservar, id_usuario)
+
+        reservacion.reservarPaquete(id_paquete_a_reservar, id_usu)
         back = input("Presione ENTER para continuar ")
         menuHome(usuario)
 
@@ -159,7 +166,11 @@ def menuCrearCuenta():
 
     print("-- Fecha de nacimiento --")
     year               = input("Año de nacimiento: ")
-    mes                = input("Mes de nacimiento: ")
+    mes                = int(input("Mes de nacimiento: "))
+    while mes <0 or mes >12:
+        print("Mes invalido")
+        mes = int(input("Mes de nacimiento: "))
+
     dia                = input("Dia de nacimiento: ")
     fecha_nacimiento = f"{year}-{mes}-{dia}"
     correo_electronico = input("Ingrese su correo electronico: ")
@@ -184,16 +195,11 @@ def menuCrearCuenta():
     usuario.password           = password_hash
 
     usuario_creado = usuario.insetar()
+    
     back = input("Presione ENTER para continuar ")
-    if usuario_creado:
-        menuHome(usuario)
+    menuHome(usuario_creado)
 
 
-
-reservacion = Reservacion() 
-paquete = Paquete()
-destino = Destino()
-usuario = Usuario()
 
 
 
