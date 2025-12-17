@@ -2,6 +2,7 @@ import os
 from models.destinos import Destino
 from models.usuarios import Usuario
 from models.paquetes import Paquete
+from models.reservaciones import Reservacion
 
 def index():
     print("¡Bienvenido a Viajes Aventura!")
@@ -33,9 +34,34 @@ def menuAdminDestinos():
 
         destino.agregarDestino()
 
-    elif opcionAdmin == 2:
+    elif opcionAdmin == 2:                  # Agregar paquete
+        print("Agregar paquetes \n")
+        print("-----------------------------")
+        
         print("Listado de destinos\n")
         destino.listarDestinos()
+
+        print("")
+        cantidad_destinos = int(input("Ingrese la cantidad de destinos quiera agregar: "))
+        lista_ids = []
+        c = 1
+
+        print("")
+        while c <= cantidad_destinos:
+            id_destino = int(input(f"Ingrese la id del destino {c}: "))
+            lista_ids.append(id_destino)
+            c += 1
+        print(lista_ids)
+
+        print("")
+        paquete.nombre_paquete = input("Ingrese nombre del paquete: ")
+        paquete.precio_total = input("Ingrese precio del paquete: ")
+        paquete.duracion_dias = int(input("Ingrese la duración del viaje en dias: "))
+        paquete.servicios_incluidos = input("Ingrese los servicios incluidos (Ejemplo: Alojamiento, desayuno): ")
+        paquete.fecha_inicio = input("Ingrese la fecha de inicio (YYYY-MM-DD): ")
+        paquete.fecha_regreso = input("Ingrese la fecha de retorno/termino (YYYY-MM-DD): ")
+
+        paquete.CrearPaquete(lista_ids)
 
 
 def menuHome(usuario:object):
@@ -47,19 +73,44 @@ def menuHome(usuario:object):
 
     print("1. Explorar paquetes")
     print("2. ver destinos")
+    print("3. Reservar paquete")
+    print("5. ver reservas")
+
     if tipo_usuario!= 1:
-        print("3. panel de administración")
+        print("4. panel de administración")
     print("0. Cerrar sesión")
     print("")
 
     opcionHome = int(input("Ingrese opcion: "))
+    while opcionHome < 0 or opcionHome > 4:
+        print("Opcion invalida")
+        opcionHome = int(input("Ingrese opcion: "))
 
-    while opcionHome == 3 and tipo_usuario == 1:
+    while opcionHome == 4 and tipo_usuario == 1:
         print("opcion invalida")
         opcionHome = int(input("Ingrese opcion: "))
 
     if opcionHome == 1: # Ver paquetes
-        pass
+        print("Listado de paquetes\n")
+
+        paquete.listarPaquetes()
+        back = input("Presione ENTER para continuar ")
+        menuHome(usuario)
+
+    elif opcionHome == 3: # reservar paquete
+        print("Generar reservación")
+        print("----------------------------------\n")
+
+        paquete.listarPaquetes()
+
+        id_paquete_a_reservar = int(input("Ingrese la id del paquete que quiera reservar: "))
+        id_usuario = usuario.id_usuario
+
+        reservacion.reservarPaquete(id_paquete_a_reservar, id_usuario)
+        back = input("Presione ENTER para continuar ")
+        menuHome(usuario)
+
+
 
     elif opcionHome == 2: # Ver destinos
         print("Listado de destinos\n")
@@ -139,8 +190,8 @@ def menuCrearCuenta():
 
 
 
-
-
+reservacion = Reservacion() 
+paquete = Paquete()
 destino = Destino()
 usuario = Usuario()
 

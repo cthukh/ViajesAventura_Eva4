@@ -48,8 +48,8 @@ class Destino:
                 for d in lista:
                     print("---------------------------------------------------------------------")
                     print(f"id destino: {d[0]}")
-                    print(f"Destino: {d[1]}                     precio: ${d[6]}")
-                    print(f"pais: {d[2]}                     ciudad: {d[3]}")
+                    print(f"Destino: {d[1]} \nprecio: ${d[6]}")
+                    print(f"pais: {d[2]} \nciudad: {d[3]}")
                     print(f"Actividades disponibles: {d[5]}\n")
 
                     print(f"Descripcion: {d[4]}")

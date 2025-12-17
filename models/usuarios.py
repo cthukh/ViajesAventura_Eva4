@@ -66,7 +66,7 @@ class Usuario:
                         (nombre, apellido_paterno, apellido_materno, rut, fecha_nacimiento, correo_electronico, telefono, id_tipo_usuario, password)
                     VALUES (:nom, :ape_p, :ape_m, :rut, TO_DATE(:fecha_n, 'YYYY-MM-DD'), :email, :fono, :tipo_u, :passw)"""
             
-            print(self.fecha_nacimiento)
+            # print(self.fecha_nacimiento)
 
             c.cursor.execute(sql,
                              nom     = self.nombre,
