@@ -1,4 +1,5 @@
 from datetime import date
+from .models.conexion import ConexionDB
 
 class DestinosPaquetes:
     id_destino_paquete: int
@@ -14,3 +15,12 @@ class Paquete:
     fecha_inicio: date
     fecha_regreso: date
 
+    def CrearPaquete(self,id_destino:int):
+        try:
+            c = ConexionDB()
+
+            sql = """INSERT INTO PAQUETES (nombre_paquete,precio_total,duracion_dias,servicios_incluidos,fecha_inicio,fecha_regreso)
+                    VALUES ()"""
+
+        except:
+            pass
